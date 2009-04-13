@@ -63,6 +63,22 @@ class FriendlyIdentifierTest < Test::Unit::TestCase
     flunk "Can't find an object with a different identifier column"
   end
 
+  def test_should_also_allow_object_to_be_found_by_id
+    gadget = create_gadget(:name => "new name")
+    assert_not_nil gadget.url_slug
+    assert gadget.save, "Couldn't save object #{gadget.errors.inspect}"
+    assert_not_nil (g = Gadget.find(gadget.id)), "Can't find an object by id"
+    assert_equal gadget.name, g.name, "Gadget we found is not the same as the one we want"
+  end
+
+  def test_should_also_allow_object_to_be_found_by_string_id
+    gadget = create_gadget(:name => "test name")
+    assert_not_nil gadget.url_slug
+    assert gadget.save, "Couldn't save object #{gadget.errors.inspect}"
+    assert_not_nil (g = Gadget.find(gadget.id.to_s)), "Can't find an object by id"
+    assert_equal gadget.name, g.name, "Gadget we found is not the same as the one we want"
+  end
+
   def test_should_not_mess_with_validations_and_after_save
     gadget = create_gadget :required_stuff => nil
     assert !gadget.valid?

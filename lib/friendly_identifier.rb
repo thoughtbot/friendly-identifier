@@ -41,9 +41,13 @@ module BeyondThePath
       
       # Adds class methods.
       module SingletonMethods
-        
+       
+        def friendly_identifier?(id)
+          id.is_a?(String) && id.to_i.to_s != id
+        end
+
         def find(*args)
-          if args.first.is_a? String
+          if friendly_identifier? args.first
             super(:first, :conditions => ["#{identifier_options[:identifier_column]} = ?", args.first])
           else
             super
