@@ -1,0 +1,64 @@
+=== Philosophy
+
+It's nice to have human-readable identifiers in your URLs, but can be a bit of a pain to get just right. Overriding to_param to spit out some string after the id is a great technique in a pinch, but I felt like it was high time to come up with something a bit more comprehensive.
+
+Friendly Identifier uses a source column (such as a name or title) to generate a more compact "friendly identifier". It overrides to_param to use that identifier, and also overrides ActiveRecord::Base#find to search using that identifier.
+
+Ultimately, it's designed to boil down to a single line in your model that Just Works(tm).
+
+=== Usage
+
+	friendly_identifier(source_column, options)
+
+	class Foo < ActiveRecord::Base
+	  friendly_identifier :name
+	end
+
+	class Bar < ActiveRecord::Base
+	  friendly_identifier :title, :scope => :category_id
+	end
+
+	class Baz < ActiveRecord::Base
+	  friendly_identifier :title, :identifier_column => :url_slug
+	end
+
+
+=== Options
+
+* :keep_updated - Change the identifier whenever the field it is based on is changed. Defaults to true, but set to false if you need your identifiers to be customizable or URLs to remain unchanged after creation.
+
+* :scope - Passed on to validates_uniqueness_of :friendly_identifier.	
+
+* :identifier_column - Pass in the name of an existing column you're already using and would like to reuse for the same sort functionality.
+
+* Formatting callback: You can override "self.format(str)" in your class to provide your own identifier-formatting method.
+
+
+=== Requirements
+
+Your models simply need a string column named "friendly_identifier".
+
+
+==== Caveats
+
+Beware these possible side effects:
+
+* In many cases, you don't want your URLs to change if you rename the name or title of your object. Use the :keep_updated => false option to handle this, and let the UI handle changing/updating your 
+
+* Can be a bit unpredictable with really complex associations (let me know if you have any trouble)
+
+* Does validate presence, which effectively requires that your source column be present, so you might as well add a check for that.
+
+
+==== Coming Soon(ish)
+
+* Generator to create a migration for your models
+
+
+==== Feedback Welcome!
+
+Feel free to get in touch via email if you have problems, suggestions for improvement, or even just want to show me a site that you used this plugin on.
+
+Nick Zadrozny<br/>
+nick@zadrozny.com (email/jabber/gtalk)<br/>
+http://beyondthepath.com/
