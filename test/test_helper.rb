@@ -18,7 +18,9 @@ load schema if File.exists?(schema)
 ActiveRecord::Base.logger = Logger.new(File.join(TEST_ROOT, 'debug.log'))
 
 # Test options
-class Test::Unit::TestCase #:nodoc:
+class ActiveRecord::TestCase #:nodoc:
+  include ActiveRecord::TestFixtures
+  
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
 end
