@@ -48,7 +48,9 @@ module BeyondThePath
 
         def find(*args)
           if friendly_identifier? args.first
-            super(:first, :conditions => ["#{identifier_options[:identifier_column]} = ?", args.first])
+            result = super(:first, :conditions => ["#{identifier_options[:identifier_column]} = ?", args.first])
+            raise ActiveRecord::RecordNotFound if result.blank?
+            result
           else
             super
           end
