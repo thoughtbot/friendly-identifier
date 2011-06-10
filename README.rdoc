@@ -1,3 +1,10 @@
+= DEPRECATED
+
+friendly-identifier is no longer used or maintained by thoughtbot. Please use
+{friendly_id}[https://github.com/norman/friendly_id] instead.
+
+Thanks!
+
 === Philosophy
 
 It's nice to have human-readable identifiers in your URLs, but can be a bit of a pain to get just right. Overriding to_param to spit out some string after the id is a great technique in a pinch, but I felt like it was high time to come up with something a bit more comprehensive.
