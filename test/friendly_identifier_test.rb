@@ -116,6 +116,12 @@ class FriendlyIdentifierTest < Test::Unit::TestCase
     assert_equal 'chumby-analog-clock-white', w.to_param
   end
   
+  def test_should_raise_record_not_found_on_missing_key
+    assert_raises ActiveRecord::RecordNotFound do
+      Widget.find('missing-fooriffic-widget')
+    end    
+  end
+  
 private
 
   def create_widget(options={})
